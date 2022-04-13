@@ -3,43 +3,32 @@ import Input from './components/Input'
 import Card from './components/Card'
 import Container from './components/Container'
 import Button from './components/Button'
+import { useState } from 'react'
+import UserForm from './components/UserForm'
 
 function App() {
-	const [form, handleChange] = useForm({ 
-		name: '',
-		lastname: '',
-		email: '' 
-	})
-	console.log(form)
+	const [users, setUsers] = useState([])
+	
+
+	const handleSubmit = (newUser) => {
+		setUsers([
+			...users,
+			newUser
+		])
+	}
+
+	console.log("render app")
 
 	return (
 		<Container>
 			<Card>
-				<form>
-					<Input
-						label="Nombre"
-						type="text"
-						name="name"
-						onChange={handleChange}
-						value={form.name}
-					/>
-					<Input
-						label="Apellido"
-						type="text"
-						name="lastname"
-						onChange={handleChange}
-						value={form.lastname}
-					/>
-					<Input
-						label="Email"
-						type="email"
-						name="email"
-						onChange={handleChange}
-						value={form.email}
-					/>
-					<Button text="Enviar" />
-				</form>
+				<UserForm submit={handleSubmit} />
 			</Card>
+			{users.length > 0 && <Card style={{marginTop: "10px"}}>
+				<ul>
+					{users.map((user) => <li key={user.email}>{user.name} {user.lastname}: {user.email}</li>)}
+				</ul>
+			</Card> }
 		</Container>
 	)
 }
